@@ -5,7 +5,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
-const firebaseAdmin = require('firebase-admin')
+// const firebaseAdmin = require('firebase-admin')
 const morgan = require('morgan')
 const fs = require('fs')
 const rfs = require('rotating-file-stream')
@@ -29,12 +29,12 @@ const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 
 // ------ Firebase ------///
-const firebaseConfig = require('./_config/firebase-config')
+// const firebaseConfig = require('./_config/firebase-config')
 
-firebaseAdmin.initializeApp({
-    credential: firebaseAdmin.credential.cert(firebaseConfig),
-    databaseURL: 'https://studywiseapp.firebaseio.com',
-})
+// firebaseAdmin.initializeApp({
+//     credential: firebaseAdmin.credential.cert(firebaseConfig),
+//     databaseURL: 'https://studywiseapp.firebaseio.com',
+// })
 
 // ------ Express ------///
 const app = express()

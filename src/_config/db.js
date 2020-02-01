@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 
-const dbName = process.env.DBNAME
-const dbPort = process.env.DBPORT
-const dbAddress = process.env.DBADDRESS
+// const dbName = process.env.DBNAME
+// const dbPort = process.env.DBPORT
+// const dbAddress = process.env.DBADDRESS
 try {
-    mongoose.connect(`mongodb://${dbAddress}:${dbPort}/${dbName}`, {
+    mongoose.connect(`mongodb://localhost:27017/SmartTrade`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })

@@ -10,7 +10,6 @@ const UserSchema = new Schema({
     is_verified: { type: Boolean, required: true, default: false },
     type: {
         type: String,
-        required: true,
         enum: ['seller', 'buyer'],
     },
 })
