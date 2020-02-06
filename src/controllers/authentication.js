@@ -45,7 +45,7 @@ async function userVerify(req, res) {
                             'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
                     })
                 } else if (response.success) {
-                    user.set('verified', true)
+                    user.set('is_verified', true)
                     await user.save()
                     res.status(200).json(response)
                 } else {
