@@ -57,7 +57,7 @@ async function cartUpdation(req, res) {
         })
     }
 }
-async function productGet(req, res) {
+async function cartGet(req, res) {
     const { id } = req.params
     try {
         const product = await Product.findById(id).exec()

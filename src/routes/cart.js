@@ -1,27 +1,27 @@
 const express = require('express')
 
 const router = express.Router()
-const controller = require('../controllers/seller')
+const controller = require('../controllers/cart')
 
 /* GET users listing. */
 router.get('/', (req, res) => {
-    controller.sellerGet(req, res)
+    controller.cartGet(req.res)
+})
+router.get('/', (req, res) => {
+    controller.cartGet(req.res)
 })
 
-router.get('/', (req, res) => {
-    controller.sellerGet(req, res)
-})
 
 router.post('/registration', (req, res) => {
-    controller.sellerRegitration(req, res)
+    controller.cartRegitration(req, res)
 })
 
 router.patch('/update', (req, res) => {
-    controller.sellerUpdation(req, res)
+    controller.cartUpdation(req, res)
 })
 
 router.delete('/delete', (req, res) => {
-    controller.sellerDeletion(req, res)
+    controller.cartDeletion(req, res)
 })
 
 

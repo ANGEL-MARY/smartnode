@@ -1,12 +1,16 @@
 const express = require('express')
 
 const router = express.Router()
-const controller = require('../controllers/authentication')
+const controller = require('../controllers/buyer')
 
 /* GET users listing. */
 router.get('/', (req, res) => {
-    res.send('respond with a resource')
+    controller.buyerGet(req, res)
 })
+router.get('/', (req, res) => {
+    controller.buyerGet(req, res)
+})
+
 
 router.post('/registration', (req, res) => {
     controller.buyerRegitration(req, res)

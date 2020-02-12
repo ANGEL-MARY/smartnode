@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const User = require('../models/user')
 const config = require('../_config/_config')
+console.log(config.API_KEY)
 
 const phoneVerification = require('../_util/_phoneVerification')({ apiKey: config.API_KEY })
 
@@ -17,6 +18,7 @@ async function userLogin(req, res) {
         if (user) {
             phoneVerification.requestToken(phone, via, country_code, async err => {
                 if (err) {
+                    console.log(err)
                     return res.status(500).json({
                         success: false,
                         message: `Yikes! An error occurred, we are sending expert monkeys to handle the situation ${err}`,
@@ -37,12 +39,11 @@ async function userVerify(req, res) {
         const { otp, phone, country_code } = req.body
         const user = await User.findOne({ phone }).exec()
         if (otp && user) {
-            phoneVerification.verifyToken(phone, otp, country_code, async (err, response) => {
+            phoneVerification.verifyToken(phone, otp, country_code, async(err, response) => {
                 if (err) {
                     res.status(500).json({
                         success: false,
-                        message:
-                            'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+                        message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
                     })
                 } else if (response.success) {
                     user.set('verified', true)
@@ -64,8 +65,7 @@ async function userVerify(req, res) {
     } catch (error) {
         res.json({
             success: false,
-            message:
-                'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
+            message: 'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
         })
     }
 }
