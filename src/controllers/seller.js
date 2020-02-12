@@ -1,6 +1,5 @@
+/* eslint-disable no-else-return */
 const Seller = require('../models/seller')
-
-
 
 async function sellerRegistration(req, res) {
     const { range, address, latitude, longitude } = req.body
@@ -11,24 +10,25 @@ async function sellerRegistration(req, res) {
             address,
             latitude,
             longitude,
-
         })
         if (seller) {
             return res.status(200).json({
                 success: true,
-                data: seller
+                data: seller,
             })
         } else {
             return res.status(500).json({
                 success: false,
-                message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+                message:
+                    'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
             })
         }
     } catch (error) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -36,12 +36,12 @@ async function sellerUpdation(req, res) {
     const { id } = req.params
     try {
         const seller = await Seller.findByIdAndUpdate(id, {
-            ...req.body
+            ...req.body,
         })
         if (seller) {
             return res.status(200).json({
                 success: true,
-                data: seller
+                data: seller,
             })
         } else {
             return res.status(404).json({
@@ -53,7 +53,8 @@ async function sellerUpdation(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -64,7 +65,7 @@ async function sellerGet(req, res) {
         if (seller) {
             return res.status(200).json({
                 success: true,
-                data: seller
+                data: seller,
             })
         } else {
             return res.status(404).json({
@@ -76,7 +77,8 @@ async function sellerGet(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -87,7 +89,7 @@ async function sellerGetAll(req, res) {
         if (seller) {
             return res.status(200).json({
                 success: true,
-                data: seller
+                data: seller,
             })
         } else {
             return res.status(404).json({
@@ -99,7 +101,8 @@ async function sellerGetAll(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -110,7 +113,7 @@ async function sellerDeletion(req, res) {
         if (seller) {
             return res.status(200).json({
                 success: true,
-                data: seller
+                data: seller,
             })
         } else {
             return res.status(404).json({
@@ -122,7 +125,8 @@ async function sellerDeletion(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
