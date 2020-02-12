@@ -1,22 +1,21 @@
-const Cart = require('../models/cart')
+const Product = require('../models/product')
 
 
 
-async function cartRegistration(req, res) {
-    const { product, current_price, is_sold } = req.body
+async function productRegistration(req, res) {
+    const { seller, name, price } = req.body
 
     try {
-        const cart = await Cart.create({
-            product,
-            current_price,
-            is_sold,
-
+        const product = await Product.create({
+            seller,
+            name,
+            price,
 
         })
-        if (cart) {
+        if (product) {
             return res.status(200).json({
                 success: true,
-                data: cart
+                data: product
             })
         } else {
             return res.status(500).json({
@@ -32,16 +31,16 @@ async function cartRegistration(req, res) {
         })
     }
 }
-async function cartUpdation(req, res) {
+async function productUpdation(req, res) {
     const { id } = req.params
     try {
-        const cart = await Cart.findByIdAndUpdate(id, {
+        const product = await Product.findByIdAndUpdate(id, {
             ...req.body
         })
-        if (cart) {
+        if (product) {
             return res.status(200).json({
                 success: true,
-                data: cart
+                data: product
             })
         } else {
             return res.status(404).json({
@@ -80,14 +79,14 @@ async function productGet(req, res) {
         })
     }
 }
-async function cartGetAll(req, res) {
+async function productGetAll(req, res) {
     const { id } = req.params
     try {
-        const cart = await Cart.find().exec()
-        if (cart) {
+        const product = await Product.find().exec()
+        if (product) {
             return res.status(200).json({
                 success: true,
-                data: cart
+                data: product
             })
         } else {
             return res.status(404).json({
@@ -103,14 +102,14 @@ async function cartGetAll(req, res) {
         })
     }
 }
-async function cartDeletion(req, res) {
+async function productDeletion(req, res) {
     const { id } = req.params
     try {
-        const cart = await Cart.findByIdAndDelete(id).exec()
-        if (cart) {
+        const product = await Product.findByIdAndDelete(id).exec()
+        if (product) {
             return res.status(200).json({
                 success: true,
-                data: cart
+                data: product
             })
         } else {
             return res.status(404).json({
