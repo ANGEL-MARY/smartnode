@@ -1,7 +1,7 @@
 const express = require('express')
+const controller = require('../controllers/authentication')
 
 const router = express.Router()
-const controller =  require('../controllers/authentication')
 
 /* GET users listing. */
 router.get('/', (req, res) => {

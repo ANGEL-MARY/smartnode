@@ -32,7 +32,7 @@ async function sellerRegistration(req, res) {
         })
     }
 }
-async function sellerUpdation(req, res) {
+async function sellerUpdate(req, res) {
     const { id } = req.params
     try {
         const seller = await Seller.findByIdAndUpdate(id, {
@@ -131,4 +131,4 @@ async function sellerDeletion(req, res) {
     }
 }
 
-module.exports = { sellerRegistration, sellerUpdation, sellerGet, sellerGetAll, sellerDeletion }
+module.exports = { sellerRegistration, sellerUpdate, sellerGet, sellerGetAll, sellerDeletion }

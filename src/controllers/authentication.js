@@ -1,7 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
+const jwt = require('jsonwebtoken')
+
 const User = require('../models/user')
 const config = require('../_config/_config')
-console.log(config.API_KEY)
 
 const phoneVerification = require('../_util/_phoneVerification')({ apiKey: config.API_KEY })
 
@@ -36,18 +38,29 @@ async function userLogin(req, res) {
 
 async function userVerify(req, res) {
     try {
-        const { otp, phone, country_code } = req.body
+        const { otp, phone } = req.body
+
+        const country_code = 91
         const user = await User.findOne({ phone }).exec()
         if (otp && user) {
-            phoneVerification.verifyToken(phone, otp, country_code, async(err, response) => {
+            phoneVerification.verifyToken(phone, otp, country_code, async (err, response) => {
                 if (err) {
                     res.status(500).json({
                         success: false,
-                        message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+                        message:
+                            'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
                     })
                 } else if (response.success) {
                     user.set('is_verified', true)
                     await user.save()
+                    const jwtPayload = { phone: user.phone, id: user._id }
+                    const jwtToken = await jwt.sign(jwtPayload, config.SECRET, {
+                        expiresIn: '7d', // expires in 7 days
+                    })
+                    res.status(200).json({
+                        success: true,
+                        access_token: jwtToken,
+                    })
                     res.status(200).json(response)
                 } else {
                     res.status(202).json({
@@ -65,9 +78,44 @@ async function userVerify(req, res) {
     } catch (error) {
         res.json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
         })
     }
 }
 
-module.exports = { userLogin, userVerify }
+async function retry(req, res) {
+    try {
+        const { phone, via } = req.body
+
+        const country_code = 91
+
+        if (phone && via) {
+            phoneVerification.requestToken(phone, via, country_code, async err => {
+                if (err) {
+                    console.log(err)
+                    return res.status(500).json({
+                        success: false,
+                        message: `Yikes! An error occurred, we are sending expert monkeys to handle the situation ${err}`,
+                    })
+                }
+                return res.status(200).json({
+                    success: true,
+                })
+            })
+        } else {
+            res.status(400).json({
+                success: false,
+                message: 'Bad request',
+            })
+        }
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message:
+                'Yikes! An error occured, we are sending expert monkeys to handle the situation ',
+        })
+    }
+}
+
+module.exports = { userLogin, userVerify, retry }

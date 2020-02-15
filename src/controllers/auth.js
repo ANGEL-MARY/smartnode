@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+
 const logger = require('../_config/logger')
 const config = require('../_config/_config')
 

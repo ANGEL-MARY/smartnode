@@ -27,6 +27,7 @@ const db = require('./_config/db')
 // ------ Router imports ------///
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
+const sellerRouter = require('./routes/seller')
 
 // ------ Firebase ------///
 // const firebaseConfig = require('./_config/firebase-config')
@@ -50,6 +51,7 @@ app.use('/media', express.static(`${__dirname}/media`))
 // ------ APIs ------///
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+app.use('/seller', sellerRouter)
 
 // Morgan logger
 app.use(

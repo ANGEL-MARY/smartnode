@@ -10,4 +10,4 @@ const SellerSchema = new Schema({
     longitude: { type: Number, required: true },
 })
 const Seller = mongoose.model('Seller', SellerSchema)
-module.exports = Sellers
+module.exports = Seller
