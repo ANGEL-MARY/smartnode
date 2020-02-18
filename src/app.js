@@ -28,6 +28,8 @@ const db = require('./_config/db')
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const sellerRouter = require('./routes/seller')
+const itemRouter = require('./routes/item')
+const productRouter = require('./routes/product')
 
 // ------ Firebase ------///
 // const firebaseConfig = require('./_config/firebase-config')
@@ -47,11 +49,14 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'media'))) // setting middleware
 app.use('/media', express.static(`${__dirname}/media`))
+console.log(`${__dirname}/media`)
 
 // ------ APIs ------///
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/seller', sellerRouter)
+app.use('/items', itemRouter)
+app.use('/products', productRouter)
 
 // Morgan logger
 app.use(

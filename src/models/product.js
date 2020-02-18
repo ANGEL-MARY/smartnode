@@ -4,7 +4,7 @@ const { Schema } = mongoose
 
 const ProductSchema = new Schema({
     seller: { type: Schema.Types.ObjectId, ref: 'Seller' },
-    name: { type: String, required: true },
+    item: { type: Schema.Types.ObjectId, ref: 'Item' },
     price: { type: String, required: true },
     sell_method: {
         type: String,

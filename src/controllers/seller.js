@@ -1,11 +1,17 @@
 /* eslint-disable no-else-return */
 const Seller = require('../models/seller')
+const User = require('../models/user')
 
 async function sellerRegistration(req, res) {
     const { range, address, latitude, longitude } = req.body
+    const { id } = req.decoded
 
     try {
+        const user = await User.findOne({ _id: id }).exec()
+        user.set('type', 'seller')
+        await user.save()
         const seller = await Seller.create({
+            user,
             range,
             address,
             latitude,
@@ -82,10 +88,11 @@ async function sellerGet(req, res) {
         })
     }
 }
-async function sellerGetAll(req, res) {
-    const { id } = req.params
+async function sellerDetails(req, res) {
+    const { id } = req.decoded
     try {
-        const seller = await Seller.find().exec()
+        const user = await User.findOne({ _id: id }).exec()
+        const seller = await Seller.findOne({ user }).exec()
         if (seller) {
             return res.status(200).json({
                 success: true,
@@ -131,4 +138,4 @@ async function sellerDeletion(req, res) {
     }
 }
 
-module.exports = { sellerRegistration, sellerUpdate, sellerGet, sellerGetAll, sellerDeletion }
+module.exports = { sellerRegistration, sellerUpdate, sellerGet, sellerDetails, sellerDeletion }
