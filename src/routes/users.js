@@ -1,15 +1,19 @@
 const express = require('express')
 const controller = require('../controllers/authentication')
+const jwt = require('../_util/jwt')
 
 const router = express.Router()
 
-/* GET users listing. */
-router.get('/', (req, res) => {
-    res.send('respond with a resource')
-})
-
 router.post('/login', (req, res) => {
     controller.userLogin(req, res)
+})
+
+router.post('/verify', (req, res) => {
+    controller.userVerify(req, res)
+})
+
+router.get('/', jwt.verifyJWTTokenIsUser, (req, res) => {
+    controller.getUser(req, res)
 })
 
 module.exports = router

@@ -1,8 +1,11 @@
+/* eslint-disable no-else-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
+const Seller = require('../models/seller')
+const Buyer = require('../models/buyer')
 const config = require('../_config/_config')
 
 const phoneVerification = require('../_util/_phoneVerification')({ apiKey: config.API_KEY })
@@ -45,6 +48,7 @@ async function userVerify(req, res) {
         if (otp && user) {
             phoneVerification.verifyToken(phone, otp, country_code, async (err, response) => {
                 if (err) {
+                    console.log(err)
                     res.status(500).json({
                         success: false,
                         message:
@@ -57,13 +61,13 @@ async function userVerify(req, res) {
                     const jwtToken = await jwt.sign(jwtPayload, config.SECRET, {
                         expiresIn: '7d', // expires in 7 days
                     })
-                    res.status(200).json({
+                    return res.status(200).json({
                         success: true,
                         access_token: jwtToken,
+                        user,
                     })
-                    res.status(200).json(response)
                 } else {
-                    res.status(202).json({
+                    return res.status(202).json({
                         success: false,
                         message: 'invalid verification code',
                     })
@@ -118,4 +122,28 @@ async function retry(req, res) {
     }
 }
 
-module.exports = { userLogin, userVerify, retry }
+async function getUser(req, res) {
+    try {
+        const { id } = req.decoded
+        const user = await User.findOne({ _id: id }).exec()
+        if (user) {
+            return res.status(200).json({
+                success: true,
+                data: user,
+            })
+        } else {
+            return res.status(400).json({
+                success: false,
+                message: 'Bad request',
+            })
+        }
+    } catch (u) {
+        return res.status(500).json({
+            success: false,
+            message:
+                'Yikes! An error occured, we are sending expert monkeys to handle the situation ',
+        })
+    }
+}
+
+module.exports = { userLogin, userVerify, retry, getUser }

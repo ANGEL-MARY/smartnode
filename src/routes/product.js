@@ -8,13 +8,12 @@ router.get('/', (req, res) => {
     controller.productGet(req, res)
 })
 
-router.get('/', (req, res) => {
-    controller.productGet(req, res)
+router.get('/all', (req, res) => {
+    controller.productGetAll(req, res)
 })
 
-
-router.post('/registration', (req, res) => {
-    controller.productRegitration(req, res)
+router.post('/', (req, res) => {
+    controller.productRegistration(req, res)
 })
 
 router.patch('/update', (req, res) => {
@@ -24,8 +23,5 @@ router.patch('/update', (req, res) => {
 router.delete('/delete', (req, res) => {
     controller.productDeletion(req, res)
 })
-
-
-
 
 module.exports = router
