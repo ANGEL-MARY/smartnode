@@ -8,9 +8,6 @@ async function buyerRegistration(req, res) {
     const { id } = req.decoded
 
     try {
-        const user = await User.findOne({ _id: id }).exec() 
-        user.set('type', 'buyer')
-        await user.save()
         const buyer = await Buyer.create({
             user,
             shopname,
@@ -20,6 +17,9 @@ async function buyerRegistration(req, res) {
             longitude,
         })
         if (buyer) {
+            const user = await User.findOne({ _id: id }).exec()
+            user.set('type', 'buyer')
+            await user.save()
             return res.status(200).json({
                 success: true,
                 data: buyer,
@@ -27,16 +27,14 @@ async function buyerRegistration(req, res) {
         } else {
             return res.status(500).json({
                 success: false,
-                message:
-                    'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+                message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
             })
         }
     } catch (error) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message:
-                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -62,8 +60,7 @@ async function buyerUpdation(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message:
-                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -86,8 +83,7 @@ async function buyerGet(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message:
-                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -111,8 +107,7 @@ async function buyerDetails(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message:
-                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -135,8 +130,7 @@ async function buyerDeletion(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message:
-                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
