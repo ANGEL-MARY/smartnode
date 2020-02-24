@@ -4,7 +4,7 @@ const router = express.Router()
 const controller = require('../controllers/product')
 
 /* GET users listing. */
-router.get('/', (req, res) => {
+router.get('/single/:id', (req, res) => {
     controller.productGet(req, res)
 })
 
@@ -16,11 +16,11 @@ router.post('/', (req, res) => {
     controller.productRegistration(req, res)
 })
 
-router.patch('/update', (req, res) => {
+router.patch('/:id', (req, res) => {
     controller.productUpdation(req, res)
 })
 
-router.delete('/delete', (req, res) => {
+router.delete('/:id', (req, res) => {
     controller.productDeletion(req, res)
 })
 

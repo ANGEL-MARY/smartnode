@@ -1,4 +1,4 @@
-const Item = require('../models/itmes')
+const Item = require('../models/items')
 const uploadUtil = require('../_util/upload')
 
 async function getItemList(req, res) {
@@ -31,6 +31,7 @@ async function addItemList(req, res) {
             }
 
             const { name } = req.body
+            console.log(name)
             if (name) {
                 const item = await Item.create({
                     name,
