@@ -94,7 +94,10 @@ async function productGet(req, res) {
 }
 async function productGetAll(req, res) {
     try {
+<<<<<<< HEAD
         console.log("hi")
+=======
+>>>>>>> 39fd2c0fdbafa520655dd66cff1e87e4fe17aea9
         const product = await Product.find()
             .populate('item')
             .exec()

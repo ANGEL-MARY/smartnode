@@ -20,6 +20,9 @@ async function buyerRegistration(req, res) {
             longitude,
         })
         if (buyer) {
+            const user = await User.findOne({ _id: id }).exec()
+            user.set('type', 'buyer')
+            await user.save()
             return res.status(200).json({
                 success: true,
                 data: buyer,
