@@ -1,7 +1,7 @@
 const Cart = require('../models/cart')
 
 async function addCart(req, res) {
-    const { product, current_price, is_sold } = req.body
+    const { product, current_price } = req.body
     const { id } = req.decoded
 
     try {

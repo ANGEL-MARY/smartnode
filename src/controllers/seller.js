@@ -7,14 +7,7 @@ async function sellerRegistration(req, res) {
     const { id } = req.decoded
 
     try {
-<<<<<<< HEAD
         const user = await User.findOne({ _id: id }).exec()
-        user.set('type', 'seller')
-        await user.save()
-=======
-
-        const user = await User.findOne({ _id: id }).exec()
->>>>>>> 39fd2c0fdbafa520655dd66cff1e87e4fe17aea9
         const seller = await Seller.create({
             user,
             range,
@@ -23,7 +16,6 @@ async function sellerRegistration(req, res) {
             longitude,
         })
         if (seller) {
-
             user.set('type', 'seller')
             await user.save()
             return res.status(200).json({
@@ -33,14 +25,16 @@ async function sellerRegistration(req, res) {
         } else {
             return res.status(500).json({
                 success: false,
-                message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+                message:
+                    'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
             })
         }
     } catch (error) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -65,18 +59,20 @@ async function sellerUpdate(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
 async function sellerGet(req, res) {
-    const { id } = req.params
     try {
-        const seller = await Seller.findById(id).exec()
+        const user = await User.find({ phone: '9633498059' }).exec()
+        const seller = await Seller.find({ 'user.phone': '9633498059' }).exec()
         if (seller) {
             return res.status(200).json({
                 success: true,
                 data: seller,
+                user,
             })
         } else {
             return res.status(404).json({
@@ -88,7 +84,8 @@ async function sellerGet(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -112,7 +109,8 @@ async function sellerDetails(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }
@@ -135,7 +133,8 @@ async function sellerDeletion(req, res) {
         console.log(error)
         return res.status(500).json({
             success: false,
-            message: 'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
         })
     }
 }

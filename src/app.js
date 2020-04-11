@@ -28,6 +28,7 @@ const db = require('./_config/db')
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const sellerRouter = require('./routes/seller')
+const buyerRouter = require('./routes/buyer')
 const itemRouter = require('./routes/item')
 const productRouter = require('./routes/product')
 
@@ -57,6 +58,7 @@ app.use('/users', usersRouter)
 app.use('/seller', sellerRouter)
 app.use('/items', itemRouter)
 app.use('/products', productRouter)
+app.use('/buyer', buyerRouter)
 
 // Morgan logger
 app.use(

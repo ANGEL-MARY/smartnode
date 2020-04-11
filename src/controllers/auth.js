@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+// const jwt = require('jsonwebtoken')
 
 const logger = require('../_config/logger')
 const config = require('../_config/_config')
@@ -47,8 +47,7 @@ async function userSignIn(req, res) {
 async function userVerify(req, res) {
     try {
         const { otp, phone, country_code } = req.body
-        const { uid } = req.decoded
-        const user = await User.findOne({ uid }).exec()
+        const user = await User.findOne({ phone }).exec()
         if (otp && user) {
             phoneVerification.verifyToken(phone, otp, country_code, async (err, response) => {
                 if (err) {

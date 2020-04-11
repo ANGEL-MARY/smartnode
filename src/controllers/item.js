@@ -13,7 +13,7 @@ async function getItemList(req, res) {
         res.status(500).json({
             success: false,
             message:
-                'Yikes! An error occured, we are sending expert monkeys to handle the situation ',
+                'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
         })
     }
 }
@@ -26,7 +26,7 @@ async function addItemList(req, res) {
                 return res.status(500).json({
                     success: false,
                     message:
-                        'Yikes! An error occured, we are sending expert monkeys to handle the situation ',
+                        'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
                 })
             }
 
@@ -38,19 +38,18 @@ async function addItemList(req, res) {
                     image: `media/${req.files[0].filename}`,
                 })
 
-                res.status(200).json({
+                return res.status(200).json({
                     success: true,
                     data: item,
                 })
-            } else {
-                return res.status(400).send({
-                    success: false,
-                    message: 'Bad request',
-                })
             }
+            return res.status(400).send({
+                success: false,
+                message: 'Bad request',
+            })
         })
     } catch (error) {
-         console.log(error)
+        console.log(error)
         res.status(500).json({
             success: false,
             message:

@@ -8,7 +8,7 @@ async function buyerRegistration(req, res) {
     const { id } = req.decoded
 
     try {
-        const user = await User.findOne({ _id: id }).exec() 
+        const user = await User.findOne({ _id: id }).exec()
         user.set('type', 'buyer')
         await user.save()
         const buyer = await Buyer.create({
@@ -20,9 +20,9 @@ async function buyerRegistration(req, res) {
             longitude,
         })
         if (buyer) {
-            const user = await User.findOne({ _id: id }).exec()
-            user.set('type', 'buyer')
-            await user.save()
+            const userData = await User.findOne({ _id: id }).exec()
+            userData.set('type', 'buyer')
+            await userData.save()
             return res.status(200).json({
                 success: true,
                 data: buyer,

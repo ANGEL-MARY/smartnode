@@ -1,11 +1,10 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-else-return */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-console */
 const jwt = require('jsonwebtoken')
 
 const User = require('../models/user')
-const Seller = require('../models/seller')
-const Buyer = require('../models/buyer')
 const config = require('../_config/_config')
 
 const phoneVerification = require('../_util/_phoneVerification')({ apiKey: config.API_KEY })
@@ -74,13 +73,13 @@ async function userVerify(req, res) {
                 }
             })
         } else {
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 message: 'Bad request',
             })
         }
     } catch (error) {
-        res.json({
+        return res.json({
             success: false,
             message:
                 'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
@@ -117,7 +116,7 @@ async function retry(req, res) {
         res.status(500).json({
             success: false,
             message:
-                'Yikes! An error occured, we are sending expert monkeys to handle the situation ',
+                'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
         })
     }
 }
@@ -141,7 +140,7 @@ async function getUser(req, res) {
         return res.status(500).json({
             success: false,
             message:
-                'Yikes! An error occured, we are sending expert monkeys to handle the situation ',
+                'Yikes! An error occurred, we are sending expert monkeys to handle the situation ',
         })
     }
 }
