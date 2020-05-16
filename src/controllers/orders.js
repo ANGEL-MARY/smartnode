@@ -1,20 +1,24 @@
 const Cart = require('../models/cart')
+const Orders = require('../models/orders')
 
-async function addCart(req, res) {
-    const { product, current_price } = req.body
-    const { id } = req.decoded
+async function ordersCreate(req, res) {
+    const { cart: id } = req.body
+    const { id: userId } = req.decoded
 
     try {
-        const cart = await Cart.create({
-            user: id,
+        const cart = await Cart.findById(id).exec()
+        const { product, current_price } = cart
+
+        const orders = await Orders.create({
+            user: userId,
             product,
             current_price,
             is_sold: false,
         })
-        if (cart) {
+        if (orders) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: orders,
             })
         }
         return res.status(500).json({
@@ -31,16 +35,16 @@ async function addCart(req, res) {
         })
     }
 }
-async function cartUpdate(req, res) {
+async function orderUpdate(req, res) {
     const { id } = req.params
     try {
-        const cart = await Cart.findByIdAndUpdate(id, {
+        const order = await Orders.findByIdAndUpdate(id, {
             ...req.body,
         })
-        if (cart) {
+        if (order) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: order,
             })
         }
         return res.status(404).json({
@@ -56,14 +60,14 @@ async function cartUpdate(req, res) {
         })
     }
 }
-async function cartGet(req, res) {
+async function ordersGet(req, res) {
     const { id } = req.params
     try {
-        const cart = await Cart.findById(id).exec()
-        if (cart) {
+        const orders = await Orders.findById(id).exec()
+        if (orders) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: orders,
             })
         }
         return res.status(404).json({
@@ -79,16 +83,16 @@ async function cartGet(req, res) {
         })
     }
 }
-async function cartGetAll(req, res) {
-    const { id } = req.decoded
+async function ordersGetSeller(req, res) {
+    const { id } = req.params
     try {
-        const cart = await Cart.find({ user: id, is_sold: false })
+        const orders = await Orders.find({ seller: id })
             .populate('product')
             .exec()
-        if (cart) {
+        if (orders) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: orders,
             })
         }
         return res.status(404).json({
@@ -104,14 +108,39 @@ async function cartGetAll(req, res) {
         })
     }
 }
-async function cartDeletion(req, res) {
-    const { id } = req.params
+async function ordersGetAll(req, res) {
+    const { id } = req.decoded
     try {
-        const cart = await Cart.findByIdAndDelete(id).exec()
-        if (cart) {
+        const orders = await Orders.find({ user: id })
+            .populate('product')
+            .exec()
+        if (orders) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: orders,
+            })
+        }
+        return res.status(404).json({
+            success: false,
+            message: 'Not found',
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+        })
+    }
+}
+async function orderDelete(req, res) {
+    const { id } = req.params
+    try {
+        const order = await Orders.findByIdAndDelete(id).exec()
+        if (order) {
+            return res.status(200).json({
+                success: true,
+                data: order,
             })
         }
         return res.status(404).json({
@@ -128,4 +157,11 @@ async function cartDeletion(req, res) {
     }
 }
 
-module.exports = { addCart, cartDeletion, cartGet, cartGetAll, cartUpdate }
+module.exports = {
+    ordersCreate,
+    orderDelete,
+    ordersGet,
+    ordersGetAll,
+    ordersGetSeller,
+    orderUpdate,
+}

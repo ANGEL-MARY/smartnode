@@ -16,7 +16,7 @@ router.post('/', (req, res) => {
 })
 
 router.patch('/:id', (req, res) => {
-    controller.cartUpdation(req, res)
+    controller.cartUpdate(req, res)
 })
 
 router.delete('/:id', (req, res) => {
