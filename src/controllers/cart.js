@@ -11,10 +11,21 @@ async function addCart(req, res) {
             current_price,
             is_sold: false,
         })
-        if (cart) {
+
+        const cartData = await Cart.findById(cart._id)
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
+            .exec()
+
+        if (cartData) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: cartData,
             })
         }
         return res.status(500).json({
@@ -59,7 +70,15 @@ async function cartUpdate(req, res) {
 async function cartGet(req, res) {
     const { id } = req.params
     try {
-        const cart = await Cart.findById(id).exec()
+        const cart = await Cart.findById(id)
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
+            .exec()
         if (cart) {
             return res.status(200).json({
                 success: true,
@@ -83,7 +102,13 @@ async function cartGetAll(req, res) {
     const { id } = req.decoded
     try {
         const cart = await Cart.find({ user: id, is_sold: false })
-            .populate('product')
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
             .exec()
         if (cart) {
             return res.status(200).json({
@@ -108,10 +133,13 @@ async function cartDeletion(req, res) {
     const { id } = req.params
     try {
         const cart = await Cart.findByIdAndDelete(id).exec()
+        console.log(cart)
         if (cart) {
             return res.status(200).json({
                 success: true,
-                data: cart,
+                data: {
+                    deleted_id: cart._id,
+                },
             })
         }
         return res.status(404).json({

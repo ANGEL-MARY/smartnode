@@ -13,7 +13,9 @@
     "parserOptions": {
         "ecmaVersion": 2018
     },
+
     "rules": {
+        "no-underscore-dangle":"off",
         "no-console": "off",
         "prettier/prettier": ["error"],
         "no-unused-vars": 2,

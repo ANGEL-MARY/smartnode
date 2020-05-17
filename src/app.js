@@ -32,6 +32,7 @@ const buyerRouter = require('./routes/buyer')
 const itemRouter = require('./routes/item')
 const productRouter = require('./routes/product')
 const ordersRouter = require('./routes/orders')
+const cartRouter = require('./routes/cart')
 
 // ------ Firebase ------///
 // const firebaseConfig = require('./_config/firebase-config')
@@ -61,6 +62,7 @@ app.use('/items', itemRouter)
 app.use('/products', productRouter)
 app.use('/orders', ordersRouter)
 app.use('/buyer', buyerRouter)
+app.use('/cart', cartRouter)
 
 // Morgan logger
 app.use(
