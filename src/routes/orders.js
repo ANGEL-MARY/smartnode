@@ -2,24 +2,28 @@ const express = require('express')
 
 const router = express.Router()
 const controller = require('../controllers/orders')
+const jwt = require('../_util/jwt')
 
 /* GET users listing. */
-router.get('/', (req, res) => {
+router.get('/', jwt.verifyJWTTokenIsUser, (req, res) => {
     controller.ordersGetAll(req, res)
 })
 
-router.get('/:id/seller', (req, res) => {
+router.get('/:id/seller', jwt.verifyJWTTokenIsUser, (req, res) => {
     controller.ordersGetSeller(req, res)
 })
-router.get('/:id', (req, res) => {
+router.get('/:id', jwt.verifyJWTTokenIsUser, (req, res) => {
     controller.ordersGet(req, res)
 })
 
-router.post('/', (req, res) => {
+router.post('/', jwt.verifyJWTTokenIsUser, (req, res) => {
     controller.ordersCreate(req, res)
 })
 
-router.patch('/:id', (req, res) => {
+router.post('/buy_now', jwt.verifyJWTTokenIsUser, (req, res) => {
+    controller.ordersCreateDirect(req, res)
+})
+router.patch('/:id', jwt.verifyJWTTokenIsUser, (req, res) => {
     controller.orderUpdate(req, res)
 })
 

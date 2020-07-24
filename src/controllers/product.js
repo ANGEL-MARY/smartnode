@@ -94,9 +94,19 @@ async function productGet(req, res) {
 }
 async function productGetAll(req, res) {
     try {
-        const product = await Product.find()
-            .populate('item')
-            .exec()
+        const { id: userId } = req.decoded
+        const seller = await Seller.findOne({ user: userId })
+        let product = null
+        if (seller) {
+            product = await Product.find({ seller })
+                .populate('item')
+                .exec()
+        } else {
+            product = await Product.find()
+                .populate('item')
+                .exec()
+        }
+
         if (product) {
             return res.status(200).json({
                 success: true,

@@ -52,7 +52,6 @@ app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'media'))) // setting middleware
 app.use('/media', express.static(`${__dirname}/media`))
-console.log(`${__dirname}/media`)
 
 // ------ APIs ------///
 app.use('/', indexRouter)

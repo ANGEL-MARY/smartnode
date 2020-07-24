@@ -1,24 +1,72 @@
 const Cart = require('../models/cart')
 const Orders = require('../models/orders')
 
-async function ordersCreate(req, res) {
-    const { cart: id } = req.body
+async function ordersCreateDirect(req, res) {
+    const { product, current_price } = req.body
     const { id: userId } = req.decoded
-
     try {
-        const cart = await Cart.findById(id).exec()
-        const { product, current_price } = cart
-
-        const orders = await Orders.create({
+        const order = await Orders.create({
             user: userId,
             product,
             current_price,
             is_sold: false,
         })
-        if (orders) {
+        const orderData = await Orders.findById(order._id)
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
+            .populate('user')
+            .exec()
+
+        console.log(orderData)
+        if (orderData) {
             return res.status(200).json({
                 success: true,
-                data: orders,
+                data: orderData,
+            })
+        }
+        return res.status(500).json({
+            success: false,
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            success: false,
+            message:
+                'Yikes! An error occurred, we are sending expert donkeys to handle the situation ',
+        })
+    }
+}
+async function ordersCreate(req, res) {
+    const { carts = [] } = req.body
+    const { id: userId } = req.decoded
+
+    try {
+        let isOrderPlaced = true
+        carts.forEach(async cartId => {
+            const cart = await Cart.findById(cartId).exec()
+            const { product, current_price } = cart
+
+            const orders = await Orders.create({
+                user: userId,
+                product,
+                current_price,
+                is_sold: false,
+            })
+            // eslint-disable-next-line no-unneeded-ternary
+            isOrderPlaced = orders ? true : false
+        })
+
+        if (isOrderPlaced) {
+            return res.status(200).json({
+                success: true,
+                data: 'Order placed',
             })
         }
         return res.status(500).json({
@@ -63,7 +111,16 @@ async function orderUpdate(req, res) {
 async function ordersGet(req, res) {
     const { id } = req.params
     try {
-        const orders = await Orders.findById(id).exec()
+        const orders = await Orders.findById(id)
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
+            .populate('user')
+            .exec()
         if (orders) {
             return res.status(200).json({
                 success: true,
@@ -87,7 +144,14 @@ async function ordersGetSeller(req, res) {
     const { id } = req.params
     try {
         const orders = await Orders.find({ seller: id })
-            .populate('product')
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
+            .populate('user')
             .exec()
         if (orders) {
             return res.status(200).json({
@@ -112,7 +176,14 @@ async function ordersGetAll(req, res) {
     const { id } = req.decoded
     try {
         const orders = await Orders.find({ user: id })
-            .populate('product')
+            .populate({
+                path: 'product',
+                populate: {
+                    path: 'item',
+                    model: 'Item',
+                },
+            })
+            .populate('user')
             .exec()
         if (orders) {
             return res.status(200).json({
@@ -164,4 +235,5 @@ module.exports = {
     ordersGetAll,
     ordersGetSeller,
     orderUpdate,
+    ordersCreateDirect,
 }

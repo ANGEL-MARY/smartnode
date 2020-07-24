@@ -13,7 +13,7 @@ async function userSignIn(req, res) {
         const { email, uid } = req.decoded
         if (phone && via) {
             const user =
-                (await User.findOne({ uid }).exec()) ||
+                (await User.findById(uid).exec()) ||
                 (await User.create({ phone, email, uid, type }))
             if (user) {
                 phoneVerification.requestToken(phone, via, country_code, async err => {

@@ -6,11 +6,11 @@ const { Schema } = mongoose
 const OrdersSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User' },
     product: { type: Schema.Types.ObjectId, ref: 'Product' },
-    seller: { type: Schema.Types.ObjectId, ref: 'Seller' },
     current_price: { type: Number, required: true },
-    delivery_status: {
+    quantity: { type: Number, required: true, default: 1 },
+    status: {
         type: String,
-        enum: ['accepted', 'order_taken', 'delivered', 'canceled', 'rejected', 'pending'],
+        enum: ['accepted', 'delivered', 'rejected', 'pending'],
         required: true,
         default: 'pending',
     },

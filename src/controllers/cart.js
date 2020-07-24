@@ -44,6 +44,7 @@ async function addCart(req, res) {
 }
 async function cartUpdate(req, res) {
     const { id } = req.params
+
     try {
         const cart = await Cart.findByIdAndUpdate(id, {
             ...req.body,
